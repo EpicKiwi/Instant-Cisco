@@ -4,7 +4,7 @@ Un script de generation de procédures cisco. Ce script permet de génèrer des 
 
 ### Utilisation
 
-Vous devez vous assurer d'avoir installé *NodeJs* et *NPM* sur votre machine. Si ce n'est pas le cas, rendrez vous sur [le site officiel](https://nodejs.org) ou votre géstionnaire de paquets favoris pour l'installer. Ce script à été codé et testé pour la version *7.0.0* de Node.
+Vous devez vous assurer d'avoir installé *NodeJs* et *NPM* sur votre machine. Si ce n'est pas le cas, rendrez vous sur [le site officiel](https://nodejs.org) ou votre géstionnaire de paquets favoris pour l'installer. Ce script a été codé et testé pour la version *7.0.0* de Node.
 
 Commencez par cloner ce dépot puis, apres vous être placé à la racine du projet installez les dépendances.
 
