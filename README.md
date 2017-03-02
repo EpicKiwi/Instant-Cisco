@@ -31,22 +31,22 @@ La configuration s'éfféctue dans le fichier json `settings.json` et possède l
     - `domain` : Une *chaine de carractères* repréentant le nom de domain vtp
     - `password` : Une *chaine de carractères* représentant le mot de passe vtp
 * `banner` : Un *objet* contenant les paramètres suivants :
-    - `ènable` : Un *boolean* activant la définition de la bannière de bienvenue
+    - `enable` : Un *boolean* activant la définition de la bannière de bienvenue
     - `text` : Une *chaine de carractères* définissant le contenu de la banière (**Ne doit pas contenir le signe "#"**)
 * `domain` : Un *objet* contenant les paramètres suivants :
-    - `ènable` : Un *boolean* activant la définition du nom de domaine des machines
+    - `enable` : Un *boolean* activant la définition du nom de domaine des machines
     - `domain` : Une *chaine de carractères* définissant le nom de domaine
 * `enablesecret` : Un *objet* contenant les paramètres suivants :
-    - `ènable` : Un *boolean* activant le mot de passe lors du passage en mode privilègié
+    - `enable` : Un *boolean* activant le mot de passe lors du passage en mode privilègié
     - `password` : Une *chaine de carractères* définissant le mot de passe
 * `consolesecret` : Un *objet* contenant les paramètres suivants :
-    - `ènable` : Un *boolean* activant le mot de passe lors de la connexion console
+    - `enable` : Un *boolean* activant le mot de passe lors de la connexion console
     - `password` : Une *chaine de carractères* définissant le mot de passe
 * `telnet` : Un *objet* contenant les paramètres suivants :
-    - `ènable` : Un *boolean* activant le protocole de communication telnet
+    - `enable` : Un *boolean* activant le protocole de communication telnet
     - `password` : Une *chaine de carractères* définissant le mot de passe
 * `ssh` : Un *objet* contenant les paramètres suivants :
-    - `ènable` : Un *boolean* activant le protocole de communication ssh en version 2
+    - `enable` : Un *boolean* activant le protocole de communication ssh en version 2
     - `keylength` : Un *nombre entier* définissant la taille de la clé a génerer (**Toute clé doit précédemment être supprimée sur la machine**)
     - `timeout` : Un *nombre entier* définissant le temps maximum de réponse ssh
     - `loginAttempts` : Un *nombre entier* définissant le nombre maximum d'echecs autorisés
