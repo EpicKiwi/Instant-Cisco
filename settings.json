@@ -1,0 +1,40 @@
+{
+	"srcfile": "test-file.xlsx",
+	"autosave": true,
+	"vtpclient" : {
+		"enable": true,
+		"domain": "vergis",
+		"password": "passvtpvergis"
+	},
+	"banner" : {
+		"enable" : true,
+		"text" : "Acces reserve aux personnes autorisees"
+	},
+	"domain" : {
+		"enable": true,
+		"domain": "vergis.network"
+	},
+	"enablesecret": {
+		"enable": true,
+		"password": "VergisStrongPassword"
+	},
+	"consolesecret": {
+		"enable": true,
+		"password": "VergisConsolePassword"
+	},
+	"telnet": {
+		"enable": true,
+		"password": "VergisTelnetPassword"
+	},
+	"ssh": {
+		"enable": true,
+		"keylength": 1024,
+		"timeout": 60,
+		"loginAttempts": 3
+	},
+	"admin": {
+		"enable": true,
+		"username": "admin",
+		"password": "root"
+	}
+}

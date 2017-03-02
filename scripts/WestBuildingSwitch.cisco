@@ -1,0 +1,42 @@
+enable
+configure terminal
+hostname WestBuildingSwitch
+
+banner motd #Acces reserve aux personnes autorisees#
+
+ip domain-name vergis.network
+
+enable secret VergisStrongPassword
+
+line con 0
+password VergisConsolePassword
+login
+exit
+
+line vty 0 15
+password VergisTelnetPassword
+login local
+transport input ssh
+exit
+
+vtp domain vergis
+vtp version 2
+vtp mode transparent
+vtp mode client
+vtp password passvtpvergis
+
+crypto key generate rsa
+1024
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+
+username admin secret root
+
+interface Vlan130
+ip address 192.168.2.7 255.255.255.0
+exit
+
+exit
+write memory
+disable

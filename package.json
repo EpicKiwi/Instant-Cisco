@@ -1,0 +1,15 @@
+{
+  "name": "cisco-config-generator",
+  "version": "1.0.0",
+  "description": "Un generateur de scripts de configuration pour routeurs et switchs",
+  "main": "generate.js",
+  "scripts": {
+    "generate": "node ./src/generate.js"
+  },
+  "author": "EpicKiwi <me@epickiwi.fr>",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^2.0.0",
+    "node-xlsx": "^0.7.4"
+  }
+}

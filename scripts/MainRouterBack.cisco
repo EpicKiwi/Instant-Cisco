@@ -1,0 +1,119 @@
+enable
+configure terminal
+hostname MainRouterBack
+
+banner motd #Acces reserve aux personnes autorisees#
+
+ip domain-name vergis.network
+
+enable secret VergisStrongPassword
+
+line con 0
+password VergisConsolePassword
+login
+exit
+
+line vty 0 15
+password VergisTelnetPassword
+login local
+transport input ssh
+exit
+
+crypto key generate rsa
+1024
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+
+username admin secret root
+
+interface S0/0
+ip address public public
+exit
+
+interface g0/0
+exit
+
+interface g0/0.130
+ip address 192.168.2.2 255.255.255.0
+encapsulation dot1q 130
+exit
+
+interface g0/0.10
+ip address 192.168.5.39 255.255.255.224
+encapsulation dot1q 10
+exit
+
+interface g0/0.20
+ip address 192.168.3.149 255.255.255.248
+encapsulation dot1q 20
+exit
+
+interface g0/0.30
+ip address 192.168.4.229 255.255.255.224
+encapsulation dot1q 30
+exit
+
+interface g0/0.40
+ip address 192.168.4.133 255.255.255.192
+encapsulation dot1q 40
+exit
+
+interface g0/0.50
+ip address 192.168.3.5 255.255.255.0
+encapsulation dot1q 50
+exit
+
+interface g0/0.60
+ip address 192.168.5.5 255.255.255.224
+encapsulation dot1q 60
+exit
+
+interface g0/0.70
+ip address 192.168.5.69 255.255.255.224
+encapsulation dot1q 70
+exit
+
+interface g0/0.80
+ip address 192.168.5.101 255.255.255.224
+encapsulation dot1q 80
+exit
+
+interface g0/0.90
+ip address 192.168.4.197 255.255.255.224
+encapsulation dot1q 90
+exit
+
+interface g0/0.100
+ip address 192.168.5.133 255.255.255.224
+encapsulation dot1q 100
+exit
+
+interface g0/0.110
+ip address 192.168.3.133 255.255.255.240
+encapsulation dot1q 110
+exit
+
+interface g0/0.120
+ip address 192.168.3.158 255.255.255.248
+encapsulation dot1q 120
+exit
+
+interface g0/0.140
+ip address 192.168.0.5 255.255.254.0
+encapsulation dot1q 140
+exit
+
+interface g0/0.150
+ip address 192.168.5.165 255.255.255.240
+encapsulation dot1q 150
+exit
+
+interface g0/0.160
+ip address 192.168.5.181 255.255.255.240
+encapsulation dot1q 160
+exit
+
+exit
+write memory
+disable
