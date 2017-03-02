@@ -28,12 +28,12 @@ module.exports = class Apliance {
 	}
 
 	refreshType(){
-		if(this.name.match(/router/i))
+		if(this.name.match(/routerpool/i))
+			this.type = ApliancesTypes.STANDBY_POOL
+		else if(this.name.match(/router/i))
 			this.type = ApliancesTypes.ROUTER
 		else if(this.name.match(/switch/i))
 			this.type = ApliancesTypes.SWITCH
-		else if(this.name.match(/pool/i))
-			this.type = ApliancesTypes.STANDBY_POOL
 		else
 			this.type = ApliancesTypes.OTHER
 	}
