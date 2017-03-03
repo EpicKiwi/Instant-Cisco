@@ -2,12 +2,13 @@ const xlsx = require('node-xlsx')
 const fs = require('fs')
 const Apliance = require("./Apliance")
 const Interface = require("./Interface")
+const Network = require("./Network")
 
 module.exports = (settings) => {
 	const xlsFile = xlsx.parse(fs.readFileSync("./"+settings.srcfile))
 	const data = xlsFile[0].data
 
-	var apliances = []
+	var network = new Network()
 
 	var currentApliance = null
 
@@ -15,8 +16,9 @@ module.exports = (settings) => {
 		var row = data[i]
 		if(row[0]){
 			if(currentApliance)
-				apliances.push(currentApliance)
-			currentApliance = new Apliance(row[0],
+				network.apliances.push(currentApliance)
+			currentApliance = new Apliance(network,
+				row[0],
 				row.slice(6),
 				settings.autosave,
 				settings.vtpclient,
@@ -31,8 +33,7 @@ module.exports = (settings) => {
 		if(currentApliance && row[1]){
 			currentApliance.interfaces.push(new Interface(currentApliance,row[1],row.slice(6),row[2],row[3],row[4]))
 		}
-
 	}
 
-	return apliances
+	return network;
 }

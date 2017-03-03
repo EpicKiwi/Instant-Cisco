@@ -3,7 +3,8 @@ const Parameters = require("./ParametersTypes")
 const getParamRegexes = require("./ParametersRegex")
 
 module.exports = class Apliance {
-	constructor(name,
+	constructor(network,
+		name,
 		parameters,
 		autosave,
 		vtpSetting,
@@ -16,6 +17,7 @@ module.exports = class Apliance {
 		adminSetting){
 
 		this.name = name
+		this.network = network
 		this.interfaces = []
 		this.type = null
 		this.refreshType()
@@ -51,6 +53,19 @@ module.exports = class Apliance {
 			case Parameters.NATIVE_VLAN:
 				this.nativeVlan = parseInt(parsedResult.result[1])
 				break;
+			case Parameters.STANDBY_POOL_AP:
+				if(this.type == ApliancesTypes.STANDBY_POOL){
+					if(!this.attachedApliances)
+						this.attachedApliances = []
+					let attached = this.network.findApliance(parsedResult.result[1])
+					if(attached){
+						this.attachedApliances.push(attached)
+						attached.setAttachedPool({pool:this,priority:parseInt(parsedResult.result[2])})
+					}else
+						console.warn(`[${this.name}] Can't find the apliance ${parsedResult.result[1]} maybe the pool is defined before it`)
+				} else
+					console.warn(`[${this.name}] Usage of 'for' parameter outside a standby apliance, ignoring`)
+				break;
 		}
 	}
 
@@ -63,6 +78,10 @@ module.exports = class Apliance {
 			this.type = ApliancesTypes.SWITCH
 		else
 			this.type = ApliancesTypes.OTHER
+	}
+
+	setAttachedPool(pool){
+		this.attachedPool = pool
 	}
 
 	getConfigurationScript(){
@@ -117,6 +136,21 @@ module.exports = class Apliance {
 			script += "\nwrite memory"
 		}
 		script += "\ndisable"
+
+		if(this.attachedPool){
+			this.network.globalStandbyIncrement++
+		}
+
 		return script
+	}
+
+	getInterfaceByVlanNumber(vlanNumber){
+		for(var i in this.interfaces){
+			let inte = this.interfaces[i]
+			if(inte.vlanNumber == vlanNumber){
+				return inte
+			}
+		}
+		return null
 	}
 }

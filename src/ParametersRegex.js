@@ -4,5 +4,6 @@ module.exports = () => {
 		return [
 			{regex:/native (\d+)/i,type:Parameters.NATIVE_VLAN},
 			{regex:/trunk/i,type:Parameters.TRUNK},
+			{regex:/for (.+) priority (\d+)/i,type:Parameters.STANDBY_POOL_AP}
 		]
 }

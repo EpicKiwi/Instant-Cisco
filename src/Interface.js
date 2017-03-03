@@ -43,21 +43,36 @@ module.exports = class Interface{
 		else
 			script += `\ninterface ${this.name}`
 
-		if(this.ip && this.mask)
-			script += `\nip address ${this.ip} ${this.mask}`
-
 		if(this.vlanNumber && !this.name.match(/vlan/i) && !this.trunk){
 			if(this.apliance.type == ApliancesTypes.ROUTER){
-				script += `\nencapsulation dot1q ${this.vlanNumber}`
+				if(this.apliance.nativeVlan == this.vlanNumber)
+					script += `\nencapsulation dot1q ${this.vlanNumber} native`
+				else
+					script += `\nencapsulation dot1q ${this.vlanNumber}`
 			} else if(this.apliance.type == ApliancesTypes.SWITCH){
 				script += `\nswitchport mode access`
 				script += `\nswitchport access vlan ${this.vlanNumber}`
 			}
 		}
+		
 		if(this.apliance.type == ApliancesTypes.SWITCH && this.trunk){
 			script += `\nswitchport mode trunk`
 			if(this.apliance.nativeVlan){
 				script += `\nswitchport trunk native vlan ${this.apliance.nativeVlan}`
+			}
+		}
+
+		if(this.ip && this.mask)
+			script += `\nip address ${this.ip} ${this.mask}`
+
+		if(this.apliance.attachedPool){
+			let standbyNumber = this.vlanNumber+this.apliance.network.globalStandbyIncrement
+			let poolInt = this.apliance.attachedPool.pool.getInterfaceByVlanNumber(this.vlanNumber)
+			if(poolInt){
+				let standByIp = poolInt.ip
+				script += `\nstandby ${standbyNumber} ip ${standByIp}`
+				script += `\nstandby ${standbyNumber} priority ${this.apliance.attachedPool.priority}`
+				script += `\nstandby ${standbyNumber} preempt`
 			}
 		}
 
