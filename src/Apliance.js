@@ -1,6 +1,7 @@
 const ApliancesTypes = require("./ApliancesTypes")
 const Parameters = require("./ParametersTypes")
 const getParamRegexes = require("./ParametersRegex")
+const VtpStates = require("./VtpStates")
 
 module.exports = class Apliance {
 	constructor(network,
@@ -21,6 +22,7 @@ module.exports = class Apliance {
 		this.interfaces = []
 		this.type = null
 		this.refreshType()
+		this.vtpState = VtpStates.CLIENT
 		this.autosave = autosave
 		this.vtpSetting = vtpSetting
 		this.bannerSetting = bannerSetting
@@ -65,6 +67,12 @@ module.exports = class Apliance {
 						console.warn(`[${this.name}] Can't find the apliance ${parsedResult.result[1]} maybe the pool is defined before it`)
 				} else
 					console.warn(`[${this.name}] Usage of 'for' parameter outside a standby apliance, ignoring`)
+				break;
+			case Parameters.VTP_SERVER:
+				this.vtpState = VtpStates.SERVER
+				break;
+			case Parameters.VTP_TRANSPARENT:
+				this.vtpState = VtpStates.TRANSPARENT
 				break;
 		}
 	}
@@ -113,8 +121,19 @@ module.exports = class Apliance {
 		if(this.vtpSetting.enable && this.type == ApliancesTypes.SWITCH){
 			script += `\nvtp domain ${this.vtpSetting.domain}`
 			script += `\nvtp version 2`
-			script += `\nvtp mode transparent`
-			script += `\nvtp mode client`
+			switch(this.vtpState){
+				case VtpStates.CLIENT:
+					script += `\nvtp mode transparent`
+					script += `\nvtp mode client`
+					break
+				case VtpStates.SERVER:
+					script += `\nvtp mode transparent`
+					script += `\nvtp mode server`
+					break
+				case VtpStates.transparent:
+					script += `\nvtp mode transparent`
+					break
+			}
 			script += `\nvtp password ${this.vtpSetting.password}\n`
 		}
 		if(this.sshSetting.enable){

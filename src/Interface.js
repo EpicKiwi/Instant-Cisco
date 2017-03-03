@@ -40,8 +40,12 @@ module.exports = class Interface{
 
 		if(this.name.match(/-/i))
 			script += `\ninterface range ${this.name}`
-		else
-			script += `\ninterface ${this.name}`
+		else{
+			if(this.name.match(/vlan/i))
+				script += `\ninterface vlan ${this.vlanNumber}`
+			else
+				script += `\ninterface ${this.name}`
+		}
 
 		if(this.vlanNumber && !this.name.match(/vlan/i) && !this.trunk){
 			if(this.apliance.type == ApliancesTypes.ROUTER){
