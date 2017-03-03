@@ -17,6 +17,7 @@ module.exports = (settings) => {
 			if(currentApliance)
 				apliances.push(currentApliance)
 			currentApliance = new Apliance(row[0],
+				row.slice(6),
 				settings.autosave,
 				settings.vtpclient,
 				settings.banner,
@@ -28,7 +29,7 @@ module.exports = (settings) => {
 				settings.admin)
 		}
 		if(currentApliance && row[1]){
-			currentApliance.interfaces.push(new Interface(currentApliance,row[1],row[2],row[3],row[4]))
+			currentApliance.interfaces.push(new Interface(currentApliance,row[1],row.slice(6),row[2],row[3],row[4]))
 		}
 
 	}

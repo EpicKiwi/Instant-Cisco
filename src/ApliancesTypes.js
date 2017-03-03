@@ -1,6 +1,6 @@
 module.exports = {
-	OTHER : 0,
-	SWITCH : 1,
-	ROUTER : 2,
-	STANDBY_POOL : 3
+	OTHER : 'other',
+	SWITCH : 'switch',
+	ROUTER : 'router',
+	STANDBY_POOL : 'standby pool'
 }

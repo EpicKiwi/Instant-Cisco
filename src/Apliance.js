@@ -1,7 +1,10 @@
 const ApliancesTypes = require("./ApliancesTypes")
+const Parameters = require("./ParametersTypes")
+const getParamRegexes = require("./ParametersRegex")
 
 module.exports = class Apliance {
 	constructor(name,
+		parameters,
 		autosave,
 		vtpSetting,
 		bannerSetting,
@@ -25,10 +28,34 @@ module.exports = class Apliance {
 		this.telnetSetting = telnetSetting
 		this.sshSetting = sshSetting
 		this.adminSetting = adminSetting
+		this.parseParameters(parameters)
+	}
+
+	parseParameters(parameters){
+		const parametersRegex = getParamRegexes()
+
+		for(var i in parameters){
+			let param = parameters[i]
+			for(var y in parametersRegex){
+				let regex = parametersRegex[y]
+				let result = regex.regex.exec(param)
+				if(result){
+					this.parseParameter({parameter:regex.type,result})
+				}
+			}
+		}
+	}
+
+	parseParameter(parsedResult){
+		switch(parsedResult.parameter){
+			case Parameters.NATIVE_VLAN:
+				this.nativeVlan = parseInt(parsedResult.result[1])
+				break;
+		}
 	}
 
 	refreshType(){
-		if(this.name.match(/routerpool/i))
+		if(this.name.match(/pool$/i))
 			this.type = ApliancesTypes.STANDBY_POOL
 		else if(this.name.match(/router/i))
 			this.type = ApliancesTypes.ROUTER

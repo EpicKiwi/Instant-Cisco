@@ -12,6 +12,8 @@ const settings = JSON.parse(fs.readFileSync("./settings.json","utf8"))
 
 const apliances = parseApliances(settings)
 
+console.log(apliances[3])
+
 console.info("Netoyage")
 fs.removeSync("./scripts")
 fs.mkdirSync("./scripts")
