@@ -15,11 +15,11 @@ const network = parseApliances(settings)
 console.info("Netoyage des anciens scripts")
 fs.removeSync("./scripts")
 fs.mkdirSync("./scripts")
-for(let i in network.apliances){
+for(var i = 0; i<network.apliances.length; i++){
 	var apliance = network.apliances[i]
 	if(apliance.type == ApliancesTypes.STANDBY_POOL)
 		continue
-	console.info(`Génération de ${apliance.name}.cisco`)
+	console.info(`${i}/${network.apliances.length-1} Génération de ${apliance.name}.cisco`)
 	fs.writeFileSync(`./scripts/${apliance.name}.cisco`,apliance.getConfigurationScript(settings.vtpclient))
 }
 console.info("Génération terminée")

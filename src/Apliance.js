@@ -118,6 +118,21 @@ module.exports = class Apliance {
 			script += `\ntransport input ssh`
 			script += `\nexit\n`
 		}
+
+		if(this.sshSetting.enable){
+			script += `\ncrypto key generate rsa\n${this.sshSetting.keylength}`
+			script += `\nip ssh version 2`
+			script += `\nip ssh time-out ${this.sshSetting.timeout}`
+			script += `\nip ssh authentication-retries ${this.sshSetting.loginAttempts}\n`
+		}
+		if(this.adminSetting.enable){
+			script += `\nusername ${this.adminSetting.username} secret ${this.adminSetting.password}\n`
+		}
+
+		for(var i in this.interfaces){
+			script += this.interfaces[i].getConfigurationScript()+"\n"
+		}
+		
 		if(this.vtpSetting.enable && this.type == ApliancesTypes.SWITCH){
 			script += `\nvtp domain ${this.vtpSetting.domain}`
 			script += `\nvtp version 2`
@@ -135,19 +150,6 @@ module.exports = class Apliance {
 					break
 			}
 			script += `\nvtp password ${this.vtpSetting.password}\n`
-		}
-		if(this.sshSetting.enable){
-			script += `\ncrypto key generate rsa\n${this.sshSetting.keylength}`
-			script += `\nip ssh version 2`
-			script += `\nip ssh time-out ${this.sshSetting.timeout}`
-			script += `\nip ssh authentication-retries ${this.sshSetting.loginAttempts}\n`
-		}
-		if(this.adminSetting.enable){
-			script += `\nusername ${this.adminSetting.username} secret ${this.adminSetting.password}\n`
-		}
-
-		for(var i in this.interfaces){
-			script += this.interfaces[i].getConfigurationScript()+"\n"
 		}
 
 		script += "\nexit"

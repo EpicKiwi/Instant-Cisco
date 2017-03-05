@@ -1,5 +1,6 @@
 const ApliancesTypes = require("./ApliancesTypes")
 const Parameters = require("./ParametersTypes")
+const EtherChannelStates = require("./EtherChannelStates")
 const getParamRegexes = require("./ParametersRegex")
 
 module.exports = class Interface{
@@ -9,6 +10,7 @@ module.exports = class Interface{
 		this.vlanNumber = vlanNumber
 		this.ip = ip
 		this.mask = mask
+		this.shutdown = false
 		this.parseParameters(parameters)
 	}
 
@@ -31,20 +33,26 @@ module.exports = class Interface{
 		switch(parsedResult.parameter){
 			case Parameters.TRUNK:
 				this.trunk = true
-				break;
+				break
+			case Parameters.SHUTDOWN:
+				this.shutdown = true
+				break
+			case Parameters.ETHERCHANNEL:
+				this.etherchannel = {
+					number: parseInt(parsedResult.result[1]),
+					state: parsedResult.result[2].toLowerCase()
+				}
+				break
 		}
 	}
 
 	getConfigurationScript(){
 		var script = ""
 
-		if(this.name.match(/-/i))
-			script += `\ninterface range ${this.name}`
-		else{
-			if(this.name.match(/vlan/i))
-				script += `\ninterface vlan ${this.vlanNumber}`
-			else
-				script += `\ninterface ${this.name}`
+		if(!this.etherchannel){
+			script += this.getInterfaceDeclaration()
+		} else {
+			script += `\ninterface port-channel ${this.etherchannel.number}`
 		}
 
 		if(this.vlanNumber && !this.name.match(/vlan/i) && !this.trunk){
@@ -80,7 +88,46 @@ module.exports = class Interface{
 			}
 		}
 
+		if(this.shutdown)
+			script += `\nshutdown`
+		else
+			script += `\nno shutdown`
+
 		script += `\nexit`
+
+		if(this.etherchannel){
+			script += `\n${this.getInterfaceDeclaration()}`
+			switch(this.etherchannel.state){
+				case EtherChannelStates.ACTIVE:
+				script += `\nchannel-group ${this.etherchannel.number} mode active`
+					break
+				case EtherChannelStates.PASSIVE:
+				script += `\nchannel-group ${this.etherchannel.number} mode passive`
+					break
+				default:
+					console.warn("[${this.apliance.name}/${this.name}] Invalid etherchannel name")
+					break
+			}
+			if(this.shutdown)
+				script += `\nshutdown`
+			else
+				script += `\nno shutdown`
+			script += `\nexit`
+		}
+
+		return script
+	}
+
+	getInterfaceDeclaration(){
+		var script  = ""
+		if(this.name.match(/-/i))
+			script += `\ninterface range ${this.name}`
+		else{
+			if(this.name.match(/vlan/i))
+				script += `\ninterface vlan ${this.vlanNumber}`
+			else
+				script += `\ninterface ${this.name}`
+		}
 		return script
 	}
 }
