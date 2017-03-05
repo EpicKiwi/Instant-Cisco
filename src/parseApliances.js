@@ -11,12 +11,9 @@ module.exports = (settings) => {
 	var network = new Network()
 
 	var currentApliance = null
-
 	for(var i = 1; i<data.length; i++){
 		var row = data[i]
 		if(row[0]){
-			if(currentApliance)
-				network.apliances.push(currentApliance)
 			currentApliance = new Apliance(network,
 				row[0],
 				row.slice(6),
@@ -29,6 +26,7 @@ module.exports = (settings) => {
 				settings.telnet,
 				settings.ssh,
 				settings.admin)
+			network.apliances.push(currentApliance)
 		}
 		if(currentApliance && row[1]){
 			currentApliance.interfaces.push(new Interface(currentApliance,row[1],row.slice(6),row[2],row[3],row[4]))
