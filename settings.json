@@ -1,6 +1,6 @@
 {
-	"srcfile": "test-file.xlsx",
-	"autosave": true,
+	"srcfile": "packet-tracer-file.xlsx",
+	"autosave": false,
 	"vtpclient" : {
 		"enable": true,
 		"domain": "vergis",
@@ -16,15 +16,15 @@
 	},
 	"enablesecret": {
 		"enable": true,
-		"password": "VergisStrongPassword"
+		"password": "class"
 	},
 	"consolesecret": {
 		"enable": true,
-		"password": "VergisConsolePassword"
+		"password": "cisco"
 	},
 	"telnet": {
 		"enable": true,
-		"password": "VergisTelnetPassword"
+		"password": "ciscotelnet"
 	},
 	"ssh": {
 		"enable": true,
