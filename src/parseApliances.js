@@ -8,7 +8,7 @@ module.exports = (settings) => {
 	const xlsFile = xlsx.parse(fs.readFileSync("./"+settings.srcfile))
 	const data = xlsFile[0].data
 
-	var network = new Network()
+	var network = new Network(settings.vlans)
 
 	var currentApliance = null
 	for(var i = 1; i<data.length; i++){

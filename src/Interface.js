@@ -49,6 +49,34 @@ module.exports = class Interface{
 	getConfigurationScript(){
 		var script = ""
 
+		if(this.etherchannel){
+			script += `\n${this.getInterfaceDeclaration()}`
+			switch(this.etherchannel.state){
+				case EtherChannelStates.ACTIVE:
+				script += `\nchannel-group ${this.etherchannel.number} mode active`
+					break
+				case EtherChannelStates.PASSIVE:
+				script += `\nchannel-group ${this.etherchannel.number} mode passive`
+					break
+				default:
+					console.warn("[${this.apliance.name}/${this.name}] Invalid etherchannel name")
+					break
+			}
+			if(this.apliance.type == ApliancesTypes.SWITCH && this.trunk){
+				script += `\nswitchport trunk encapsulation dot1q`
+				script += `\nswitchport mode trunk`
+				script += `\nswitchport nonegotiate`
+				if(this.apliance.nativeVlan){
+					script += `\nswitchport trunk native vlan ${this.apliance.nativeVlan}`
+				}
+			}
+			if(this.shutdown)
+				script += `\nshutdown`
+			else
+				script += `\nno shutdown`
+			script += `\nexit`
+		}
+
 		if(!this.etherchannel){
 			script += this.getInterfaceDeclaration()
 		} else {
@@ -70,6 +98,7 @@ module.exports = class Interface{
 		if(this.apliance.type == ApliancesTypes.SWITCH && this.trunk){
 			script += `\nswitchport trunk encapsulation dot1q`
 			script += `\nswitchport mode trunk`
+			script += `\nswitchport nonegotiate`
 			if(this.apliance.nativeVlan){
 				script += `\nswitchport trunk native vlan ${this.apliance.nativeVlan}`
 			}
@@ -79,7 +108,7 @@ module.exports = class Interface{
 			script += `\nip address ${this.ip} ${this.mask}`
 
 		if(this.apliance.attachedPool){
-			let standbyNumber = this.vlanNumber+this.apliance.network.globalStandbyIncrement
+			let standbyNumber = this.vlanNumber+this.apliance.attachedPool.pool.number
 			let poolInt = this.apliance.attachedPool.pool.getInterfaceByVlanNumber(this.vlanNumber)
 			if(poolInt){
 				let standByIp = poolInt.ip
@@ -95,26 +124,6 @@ module.exports = class Interface{
 			script += `\nno shutdown`
 
 		script += `\nexit`
-
-		if(this.etherchannel){
-			script += `\n${this.getInterfaceDeclaration()}`
-			switch(this.etherchannel.state){
-				case EtherChannelStates.ACTIVE:
-				script += `\nchannel-group ${this.etherchannel.number} mode active`
-					break
-				case EtherChannelStates.PASSIVE:
-				script += `\nchannel-group ${this.etherchannel.number} mode passive`
-					break
-				default:
-					console.warn("[${this.apliance.name}/${this.name}] Invalid etherchannel name")
-					break
-			}
-			if(this.shutdown)
-				script += `\nshutdown`
-			else
-				script += `\nno shutdown`
-			script += `\nexit`
-		}
 
 		return script
 	}

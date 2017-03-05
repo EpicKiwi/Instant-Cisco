@@ -8,6 +8,7 @@ module.exports = () => {
 			{regex:/vtp server/i,type:Parameters.VTP_SERVER},
 			{regex:/vtp transparent/i,type:Parameters.VTP_TRANSPARENT},
 			{regex:/etherchannel (\d+) (.+)/i,type:Parameters.ETHERCHANNEL},
-			{regex:/shutdown/i,type:Parameters.SHUTDOWN}
+			{regex:/shutdown/i,type:Parameters.SHUTDOWN},
+			{regex:/number (\d+)/,type:Parameters.POOL_NUMBER}
 		]
 }

@@ -68,6 +68,12 @@ module.exports = class Apliance {
 				} else
 					console.warn(`[${this.name}] Usage of 'for' parameter outside a standby apliance, ignoring`)
 				break;
+			case Parameters.POOL_NUMBER:
+				if(this.type == ApliancesTypes.STANDBY_POOL){
+					this.number = parseInt(parsedResult.result[1])
+				} else
+					console.warn(`[${this.name}] Usage of 'number' parameter outside a standby apliance, ignoring`)
+				break;
 			case Parameters.VTP_SERVER:
 				this.vtpState = VtpStates.SERVER
 				break;
@@ -129,27 +135,48 @@ module.exports = class Apliance {
 			script += `\nusername ${this.adminSetting.username} secret ${this.adminSetting.password}\n`
 		}
 
-		for(var i in this.interfaces){
-			script += this.interfaces[i].getConfigurationScript()+"\n"
+		if(!this.vtpSetting.enable && this.type == ApliancesTypes.SWITCH){
+			script += `\nvtp mode transparent`
+			for(var i in this.network.vlans){
+				var vlan = this.network.vlans[i]
+				script += `\nvlan ${vlan.number}`
+				script += `\nname ${vlan.name}`
+				script += `\nexit`
+			}
 		}
 		
 		if(this.vtpSetting.enable && this.type == ApliancesTypes.SWITCH){
-			script += `\nvtp domain ${this.vtpSetting.domain}`
-			script += `\nvtp version 2`
 			switch(this.vtpState){
 				case VtpStates.CLIENT:
 					script += `\nvtp mode transparent`
 					script += `\nvtp mode client`
+					script += `\nvtp password ${this.vtpSetting.password}\n`
 					break
 				case VtpStates.SERVER:
 					script += `\nvtp mode transparent`
 					script += `\nvtp mode server`
+					script += `\nvtp password ${this.vtpSetting.password}\n`
+					for(var i in this.network.vlans){
+						var vlan = this.network.vlans[i]
+						script += `\nvlan ${vlan.number}`
+						script += `\nname ${vlan.name}`
+						script += `\nexit`
+					}
 					break
 				case VtpStates.transparent:
 					script += `\nvtp mode transparent`
+					for(var i in this.network.vlans){
+						var vlan = this.network.vlans[i]
+						script += `\nvlan ${vlan.number}`
+						script += `\nname ${vlan.name}`
+						script += `\nexit`
+					}
 					break
 			}
-			script += `\nvtp password ${this.vtpSetting.password}\n`
+		}
+
+		for(var i in this.interfaces){
+			script += this.interfaces[i].getConfigurationScript()+"\n"
 		}
 
 		script += "\nexit"

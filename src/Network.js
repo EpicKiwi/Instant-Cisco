@@ -1,11 +1,7 @@
 module.exports = class Network {
-	constructor(apliances){
-		if(apliances){
-			this.apliances = apliances
-		} else {
-			this.apliances = []
-		}
-		this.globalStandbyIncrement = 0
+	constructor(vlans){
+		this.apliances = []
+		this.vlans = vlans
 	}
 
 	findApliance(hostname){
