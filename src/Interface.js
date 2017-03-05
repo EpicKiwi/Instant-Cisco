@@ -60,6 +60,7 @@ module.exports = class Interface{
 		}
 		
 		if(this.apliance.type == ApliancesTypes.SWITCH && this.trunk){
+			script += `\nswitchport trunk encapsulation dot1q`
 			script += `\nswitchport mode trunk`
 			if(this.apliance.nativeVlan){
 				script += `\nswitchport trunk native vlan ${this.apliance.nativeVlan}`
