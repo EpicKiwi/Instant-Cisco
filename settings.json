@@ -1,6 +1,6 @@
 {
 	"srcfile": "packet-tracer-file-nether.xlsx",
-	"autosave": false,
+	"autosave": true,
 	"vlans": [
 		{"name":"Logistique","number":10},
 		{"name":"Informatique support","number":20},
@@ -9,27 +9,27 @@
 		{"name":"R-D","number":50},
 		{"name":"Direction","number":60},
 		{"name":"RH","number":70},
-		{"name":"Secretariat de Direction","number":80},
+		{"name":"Secretariat-de-Direction","number":80},
 		{"name":"Communication","number":90},
 		{"name":"Support-client","number":100},
-		{"name":"Informatique développement","number":110},
-		{"name":"Informatique réseau","number":120},
+		{"name":"Informatique-developpement","number":110},
+		{"name":"Informatique-reseau","number":120},
 		{"name":"Management","number":130},
 		{"name":"WiFi","number":140},
 		{"name":"DMZ","number":150},
 		{"name":"Intranet","number":160}
 	],
 	"vtpclient" : {
-		"enable": false,
+		"enable": true,
 		"domain": "vergis",
 		"password": "passvtpvergis"
 	},
 	"banner" : {
-		"enable" : false,
+		"enable" : true,
 		"text" : "Acces reserve aux personnes autorisees"
 	},
 	"domain" : {
-		"enable": false,
+		"enable": true,
 		"domain": "vergis.network"
 	},
 	"enablesecret": {
@@ -41,17 +41,17 @@
 		"password": "cisco"
 	},
 	"telnet": {
-		"enable": false,
+		"enable": true,
 		"password": "ciscotelnet"
 	},
 	"ssh": {
-		"enable": false,
+		"enable": true,
 		"keylength": 1024,
 		"timeout": 60,
 		"loginAttempts": 3
 	},
 	"admin": {
-		"enable": false,
+		"enable": true,
 		"username": "admin",
 		"password": "root"
 	}

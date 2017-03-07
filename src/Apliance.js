@@ -181,7 +181,7 @@ module.exports = class Apliance {
 
 		script += "\nexit"
 		if(this.autosave){
-			script += "\nwrite memory"
+			script += "\ncopy running-config startup-config\n\n"
 		}
 		script += "\ndisable"
 
